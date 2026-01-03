@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+
+    android:padding="16dp"
+
+    tools:context=".MainActivity">
+
+
+    <TextView
+
+        android:id="@+id/signInTitle"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:text="Welcome to Constructly!"
+
+        android:textSize="24sp"
+
+        android:textStyle="bold"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:layout_marginTop="32dp" />
+
+
+    <!-- Email/Password Section -->
+
+    <EditText
+
+        android:id="@+id/emailEditText"
+
+        android:layout_width="0dp"
+
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="32dp"
+
+        android:hint="Email"
+
+        android:inputType="textEmailAddress"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/signInTitle"
+
+        android:autofillHints="emailAddress" />
+
+
+    <EditText
+
+        android:id="@+id/passwordEditText"
+
+        android:layout_width="0dp"
+
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+
+        android:hint="Password"
+
+        android:inputType="textPassword"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText"
+
+        android:autofillHints="password" />
+
+
+    <Button
+
+        android:id="@+id/signInButton"
+
+        android:layout_width="0dp"
+
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="24dp"
+
+        android:text="Sign In"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+
+
+    <Button
+
+        android:id="@+id/forgotPasswordButton"
+
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+
+        android:text="Forgot Password?"
+
+        android:textColor="?attr/colorPrimary"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/signInButton" />
+
+
+    <TextView
+
+        android:id="@+id/orSeparatorGoogle"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:text="OR"
+
+        android:layout_marginTop="24dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/forgotPasswordButton" />
+
+
+    <!-- Google Sign-In Button -->
+
+    <Button
+
+        android:id="@+id/googleSignInButton"
+
+        android:layout_width="0dp"
+
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="24dp"
+
+        android:text="Sign In with Google"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/orSeparatorGoogle" />
+
+
+    <Button
+
+        android:id="@+id/signUpTextButton"
+
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+
+        android:text="Don't have an account? Sign Up"
+
+        android:textColor="?attr/colorPrimary"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/googleSignInButton" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "140564898014",
+    "project_id": "constructly-b2a3c",
+    "storage_bucket": "constructly-b2a3c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140564898014:android:3ecdf74c0236322685a24f",
+        "android_client_info": {
+          "package_name": "com.hannahenterprises.constructly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "140564898014-q5e85i876csge12ht53973rq6dn92o17.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFkFCbJ_1wEkGypoirOpNJmhMYZD79k20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "140564898014-q5e85i876csge12ht53973rq6dn92o17.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
