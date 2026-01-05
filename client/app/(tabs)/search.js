@@ -56,7 +56,7 @@ export default function SearchScreen() {
             ) : (
                 <FlatList
                     data={filteredBuilders}
-                    keyExtractor={item => item.id.toString()}
+                    keyExtractor={item => (item.id || item._id || Math.random()).toString()}
                     renderItem={({ item }) => <BuilderCard builder={item} />}
                     contentContainerStyle={styles.list}
                 />

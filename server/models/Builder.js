@@ -5,6 +5,8 @@ const builderSchema = new mongoose.Schema({
     rating: { type: Number, default: 0 },
     expertise: [String],
     location: { type: String, required: true },
+    phone: { type: String },
+    portfolio: [String],
     verified: { type: Boolean, default: false }
 });
 

@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
 import { API_BASE_URL } from '../config';
 
 export default function RegisterBuilderScreen() {
@@ -13,8 +14,10 @@ export default function RegisterBuilderScreen() {
     const [ownerName, setOwnerName] = useState('');
     const [location, setLocation] = useState('');
     const [expertise, setExpertise] = useState('');
+    const [phone, setPhone] = useState('');
     const [loading, setLoading] = useState(false);
     const [document, setDocument] = useState(null);
+    const [portfolioPhotos, setPortfolioPhotos] = useState([]);
 
     const pickDocument = async () => {
         try {
@@ -32,9 +35,27 @@ export default function RegisterBuilderScreen() {
         }
     };
 
+    const pickPortfolioImage = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert('Permission Denied', 'We need camera roll permissions to upload photos.');
+            return;
+        }
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsMultipleSelection: true,
+            quality: 0.7,
+        });
+
+        if (!result.canceled) {
+            setPortfolioPhotos([...portfolioPhotos, ...result.assets]);
+        }
+    };
+
     const handleRegister = async () => {
-        if (!businessName || !ownerName || !location || !expertise) {
-            Alert.alert('Missing Fields', 'Please fill in all details.');
+        if (!businessName || !ownerName || !location || !expertise || !phone) {
+            Alert.alert('Missing Fields', 'Please fill in all details including mobile number.');
             return;
         }
 
@@ -47,7 +68,9 @@ export default function RegisterBuilderScreen() {
                     businessName,
                     ownerName,
                     location,
-                    expertise
+                    expertise,
+                    phone,
+                    portfolio: portfolioPhotos.map(p => p.uri) // For now, sending uris as strings
                 })
             });
 
@@ -102,6 +125,28 @@ export default function RegisterBuilderScreen() {
                     value={expertise}
                     onChangeText={setExpertise}
                 />
+                <Input
+                    label="Mobile Number"
+                    placeholder="+91 XXXXX XXXXX"
+                    keyboardType="phone-pad"
+                    value={phone}
+                    onChangeText={setPhone}
+                />
+
+                <View style={styles.uploadSection}>
+                    <Text style={styles.uploadLabel}>Work Portfolio (Photos)</Text>
+                    <TouchableOpacity style={styles.uploadButton} onPress={pickPortfolioImage}>
+                        <Ionicons name="camera-outline" size={20} color="#0EA5E9" />
+                        <Text style={styles.uploadText}>
+                            {portfolioPhotos.length > 0 ? `${portfolioPhotos.length} Photos Added` : "Add Portfolio Photos"}
+                        </Text>
+                    </TouchableOpacity>
+                    {portfolioPhotos.length > 0 && (
+                        <View style={styles.photoCountRow}>
+                            <Text style={styles.photoCountText}>✅ {portfolioPhotos.length} work photos selected</Text>
+                        </View>
+                    )}
+                </View>
 
                 <View style={styles.uploadSection}>
                     <Text style={styles.uploadLabel}>Documents (GST / Aadhar / ID)</Text>
@@ -175,4 +220,15 @@ const styles = StyleSheet.create({
         color: '#0EA5E9',
         fontWeight: '600',
     },
+    photoCountRow: {
+        marginTop: 10,
+        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+        padding: 8,
+        borderRadius: 8,
+    },
+    photoCountText: {
+        color: '#22C55E',
+        fontSize: 12,
+        fontWeight: 'bold',
+    }
 });

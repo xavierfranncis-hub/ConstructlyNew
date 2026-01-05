@@ -19,18 +19,36 @@ export default function ProjectCard({ project }) {
 
             <Text style={styles.builder}>Builder: {project.builder}</Text>
 
-            <View style={styles.progressContainer}>
-                <View style={styles.progressBar}>
-                    <View style={[styles.progressFill, { width: `${project.progress * 100}%` }]} />
+            {project.isHired && (
+                <View style={styles.progressContainer}>
+                    <View style={styles.progressBar}>
+                        <View style={[styles.progressFill, { width: `${project.progress * 100}%` }]} />
+                    </View>
+                    <Text style={styles.progressText}>{Math.round(project.progress * 100)}%</Text>
                 </View>
-                <Text style={styles.progressText}>{Math.round(project.progress * 100)}%</Text>
-            </View>
+            )}
 
             <View style={styles.footer}>
                 <Text style={styles.update}><Ionicons name="time-outline" size={14} /> {project.lastUpdate}</Text>
                 <View style={styles.actions}>
-                    <Button title="Pay" variant="secondary" style={styles.smallButton} onPress={() => router.push('/payment')} />
-                    <Button title="Chat" style={styles.smallButton} onPress={handleChat} />
+                    {project.isHired ? (
+                        <>
+                            <Button title="Pay" variant="secondary" style={styles.smallButton} onPress={() => router.push('/payment')} />
+                            <Button title="Chat" style={styles.smallButton} onPress={handleChat} />
+                        </>
+                    ) : (
+                        <>
+                            <Button
+                                title="Hire Professional"
+                                style={styles.hireButton}
+                                onPress={() => router.push({
+                                    pathname: '/hire-confirmation',
+                                    params: { projectId: project.id || project._id, builderName: project.builder }
+                                })}
+                            />
+                            <Button title="Chat" variant="secondary" style={styles.smallButton} onPress={handleChat} />
+                        </>
+                    )}
                 </View>
             </View>
         </View>
@@ -103,5 +121,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 8,
         marginVertical: 0,
+    },
+    hireButton: {
+        width: 'auto',
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        marginVertical: 0,
+        backgroundColor: '#22C55E',
     },
 });

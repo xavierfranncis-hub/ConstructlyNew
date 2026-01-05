@@ -26,7 +26,13 @@ const FALLBACK_PROJECTS = [
 router.get('/builders', async (req, res) => {
     try {
         const dbBuilders = await Builder.find();
-        const builders = [...dbBuilders, ...sessionBuilders];
+        // Convert Mongoose docs to plain objects with .id
+        const sanitizedDbBuilders = dbBuilders.map(b => ({
+            ...b.toObject(),
+            id: b._id.toString()
+        }));
+
+        const builders = [...sanitizedDbBuilders, ...sessionBuilders];
         if (builders.length > 0) {
             return res.json(builders);
         }
@@ -37,10 +43,9 @@ router.get('/builders', async (req, res) => {
     }
 });
 
-// Register Builder
 router.post('/builders', async (req, res) => {
     try {
-        const { businessName, ownerName, location, expertise } = req.body;
+        const { businessName, ownerName, location, expertise, phone, portfolio } = req.body;
 
         if (!businessName || !location) {
             return res.status(400).json({ error: 'Missing required fields' });
@@ -52,6 +57,8 @@ router.post('/builders', async (req, res) => {
             ownerName,
             location: location,
             expertise: typeof expertise === 'string' ? expertise.split(',').map(e => e.trim()) : expertise,
+            phone: phone || '',
+            portfolio: portfolio || [],
             rating: 5.0,
             verified: false
         };
@@ -76,7 +83,13 @@ router.post('/builders', async (req, res) => {
 router.get('/projects', async (req, res) => {
     try {
         const dbProjects = await Project.find().sort({ _id: -1 });
-        const projects = [...dbProjects, ...sessionProjects];
+        // Convert Mongoose docs to plain objects with .id
+        const sanitizedDbProjects = dbProjects.map(p => ({
+            ...p.toObject(),
+            id: p._id.toString()
+        }));
+
+        const projects = [...sanitizedDbProjects, ...sessionProjects];
         if (projects.length > 0) {
             return res.json(projects);
         }
@@ -95,9 +108,10 @@ router.post('/projects', async (req, res) => {
             id: Date.now(),
             title,
             builder,
-            status: status || 'Pending',
+            status: status || 'Draft/Quote',
             progress: progress || 0,
-            lastUpdate: 'Just now'
+            lastUpdate: 'Just now',
+            isHired: false
         };
 
         try {
@@ -112,6 +126,47 @@ router.post('/projects', async (req, res) => {
     } catch (err) {
         console.error('Create Project Error:', err);
         res.status(500).json({ error: 'Failed to create project' });
+    }
+});
+
+// Formalize Hire (Leads -> Active)
+router.patch('/projects/:id/hire', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { startDate, estimatedEndDate, contractAmount } = req.body;
+
+        // 1. Try DB
+        let project = await Project.findById(id);
+        if (project) {
+            project.isHired = true;
+            project.status = 'Hired / Ongoing';
+            project.startDate = startDate;
+            project.estimatedEndDate = estimatedEndDate;
+            project.contractAmount = contractAmount;
+            project.lastUpdate = 'Hired professional! Project started.';
+            await project.save();
+            return res.json(project);
+        }
+
+        // 2. Fallback for session projects (In-memory)
+        const sessionIndex = sessionProjects.findIndex(p => p.id == id);
+        if (sessionIndex !== -1) {
+            sessionProjects[sessionIndex] = {
+                ...sessionProjects[sessionIndex],
+                isHired: true,
+                status: 'Hired / Ongoing',
+                startDate,
+                estimatedEndDate,
+                contractAmount,
+                lastUpdate: 'Hired professional! Project started.'
+            };
+            return res.json(sessionProjects[sessionIndex]);
+        }
+
+        res.status(404).json({ error: 'Project not found' });
+    } catch (err) {
+        console.error('Hiring Error:', err);
+        res.status(500).json({ error: 'Failed to finalize hire' });
     }
 });
 

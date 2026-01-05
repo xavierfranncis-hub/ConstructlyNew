@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
@@ -21,16 +21,34 @@ export default function BuilderCard({ builder }) {
             </View>
 
             <View style={styles.tags}>
-                {builder.expertise.map((skill, index) => (
+                {(builder.expertise || []).map((skill, index) => (
                     <View key={index} style={styles.tag}>
                         <Text style={styles.tagText}>{skill}</Text>
                     </View>
                 ))}
             </View>
 
-            <Text style={styles.location}>
-                <Ionicons name="location-outline" size={14} color="#94A3B8" /> {builder.location}
-            </Text>
+            <View style={styles.metaRow}>
+                <Text style={styles.location}>
+                    <Ionicons name="location-outline" size={14} color="#94A3B8" /> {builder.location}
+                </Text>
+                {builder.phone && (
+                    <Text style={styles.phone}>
+                        <Ionicons name="call-outline" size={14} color="#22C55E" /> {builder.phone}
+                    </Text>
+                )}
+            </View>
+
+            {builder.portfolio && builder.portfolio.length > 0 && (
+                <View style={styles.portfolioSection}>
+                    <Text style={styles.portfolioLabel}>Work Portfolio</Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.portfolioList}>
+                        {builder.portfolio.map((uri, index) => (
+                            <Image key={index} source={{ uri }} style={styles.portfolioImage} />
+                        ))}
+                    </ScrollView>
+                </View>
+            )}
 
             <TouchableOpacity
                 style={styles.quoteButton}
@@ -102,7 +120,38 @@ const styles = StyleSheet.create({
     location: {
         color: '#94A3B8',
         fontSize: 14,
+    },
+    metaRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: 12,
+    },
+    phone: {
+        color: '#22C55E',
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    portfolioSection: {
+        marginTop: 8,
+        marginBottom: 16,
+    },
+    portfolioLabel: {
+        color: '#94A3B8',
+        fontSize: 12,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        marginBottom: 8,
+    },
+    portfolioList: {
+        flexDirection: 'row',
+    },
+    portfolioImage: {
+        width: 100,
+        height: 80,
+        borderRadius: 8,
+        marginRight: 8,
+        backgroundColor: '#334155',
     },
     quoteButton: {
         backgroundColor: '#0EA5E9',

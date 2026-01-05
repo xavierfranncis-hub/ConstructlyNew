@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import { useEffect, useState } from 'react';
 import ProjectCard from '../../components/ProjectCard';
 import { API_BASE_URL } from '../../config';
@@ -28,20 +28,48 @@ export default function DashboardScreen() {
         }
     };
 
+    const onRefresh = () => {
+        setLoading(true);
+        fetchProjects();
+    };
+
+    // Safety check: ensure projects is always an array
+    const projectsList = Array.isArray(projects) ? projects : [];
+    const hiredProjects = projectsList.filter(p => p && p.isHired);
+    const quoteLeads = projectsList.filter(p => p && !p.isHired);
+
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>My Projects</Text>
+            <ScrollView
+                contentContainerStyle={styles.scroll}
+                refreshControl={
+                    <RefreshControl refreshing={loading} onRefresh={onRefresh} color="#0EA5E9" />
+                }
+            >
+                {!loading && (
+                    <>
+                        {hiredProjects.length > 0 && (
+                            <View style={styles.section}>
+                                <Text style={styles.sectionHeader}>🏗️ Active Projects</Text>
+                                {hiredProjects.map(item => (
+                                    <ProjectCard key={item.id || item._id} project={item} />
+                                ))}
+                            </View>
+                        )}
 
-            {loading ? (
-                <ActivityIndicator size="large" color="#0EA5E9" />
-            ) : (
-                <FlatList
-                    data={projects}
-                    keyExtractor={item => item.id.toString()}
-                    renderItem={({ item }) => <ProjectCard project={item} />}
-                    contentContainerStyle={styles.list}
-                />
-            )}
+                        <View style={styles.section}>
+                            <Text style={styles.sectionHeader}>📝 Recent Quotes / Leads</Text>
+                            {quoteLeads.length > 0 ? (
+                                quoteLeads.map(item => (
+                                    <ProjectCard key={item.id || item._id} project={item} />
+                                ))
+                            ) : (
+                                <Text style={styles.emptyText}>No pending quotes.</Text>
+                            )}
+                        </View>
+                    </>
+                )}
+            </ScrollView>
         </View>
     );
 }
@@ -50,16 +78,24 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#0F172A',
+    },
+    scroll: {
         padding: 20,
         paddingTop: 60,
     },
-    header: {
-        fontSize: 28,
+    section: {
+        marginBottom: 30,
+    },
+    sectionHeader: {
+        fontSize: 22,
         fontWeight: 'bold',
         color: '#F8FAFC',
-        marginBottom: 20,
+        marginBottom: 15,
     },
-    list: {
-        paddingBottom: 20,
-    },
+    emptyText: {
+        color: '#64748B',
+        fontStyle: 'italic',
+        textAlign: 'center',
+        marginTop: 10,
+    }
 });
