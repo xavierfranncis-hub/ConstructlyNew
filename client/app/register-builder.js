@@ -4,6 +4,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import * as DocumentPicker from 'expo-document-picker';
 import { API_BASE_URL } from '../config';
 
 export default function RegisterBuilderScreen() {
@@ -13,6 +14,23 @@ export default function RegisterBuilderScreen() {
     const [location, setLocation] = useState('');
     const [expertise, setExpertise] = useState('');
     const [loading, setLoading] = useState(false);
+    const [document, setDocument] = useState(null);
+
+    const pickDocument = async () => {
+        try {
+            const result = await DocumentPicker.getDocumentAsync({
+                type: '*/*',
+                copyToCacheDirectory: true,
+            });
+
+            if (!result.canceled) {
+                setDocument(result.assets[0]);
+                Alert.alert('Success', `Selected: ${result.assets[0].name}`);
+            }
+        } catch (err) {
+            Alert.alert('Error', 'Failed to pick document');
+        }
+    };
 
     const handleRegister = async () => {
         if (!businessName || !ownerName || !location || !expertise) {
@@ -87,9 +105,15 @@ export default function RegisterBuilderScreen() {
 
                 <View style={styles.uploadSection}>
                     <Text style={styles.uploadLabel}>Documents (GST / Aadhar / ID)</Text>
-                    <TouchableOpacity style={styles.uploadButton}>
-                        <Ionicons name="cloud-upload-outline" size={20} color="#0EA5E9" />
-                        <Text style={styles.uploadText}>Upload Documents</Text>
+                    <TouchableOpacity style={styles.uploadButton} onPress={pickDocument}>
+                        <Ionicons
+                            name={document ? "checkmark-circle" : "cloud-upload-outline"}
+                            size={20}
+                            color={document ? "#22C55E" : "#0EA5E9"}
+                        />
+                        <Text style={[styles.uploadText, document && { color: "#22C55E" }]}>
+                            {document ? document.name : "Upload Documents"}
+                        </Text>
                     </TouchableOpacity>
                 </View>
 
