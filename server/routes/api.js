@@ -136,7 +136,13 @@ router.patch('/projects/:id/hire', async (req, res) => {
         const { startDate, estimatedEndDate, contractAmount } = req.body;
 
         // 1. Try DB
-        let project = await Project.findById(id);
+        let project = null;
+        if (mongoose.Types.ObjectId.isValid(id)) {
+            project = await Project.findById(id);
+        } else {
+            project = await Project.findOne({ id: Number(id) });
+        }
+
         if (project) {
             project.isHired = true;
             project.status = 'Hired / Ongoing';
@@ -145,10 +151,17 @@ router.patch('/projects/:id/hire', async (req, res) => {
             project.contractAmount = contractAmount;
             project.lastUpdate = 'Hired professional! Project started.';
             await project.save();
+
+            // Also update session if present
+            const idx = sessionProjects.findIndex(p => p.id == id || (project.id && p.id == project.id));
+            if (idx !== -1) {
+                sessionProjects[idx] = { ...sessionProjects[idx], ...project.toObject(), id: project.id || sessionProjects[idx].id };
+            }
+
             return res.json(project);
         }
 
-        // 2. Fallback for session projects (In-memory)
+        // 2. Fallback for session projects (In-memory ONLY)
         const sessionIndex = sessionProjects.findIndex(p => p.id == id);
         if (sessionIndex !== -1) {
             sessionProjects[sessionIndex] = {
