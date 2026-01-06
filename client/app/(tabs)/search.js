@@ -1,17 +1,23 @@
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
+import { useLocalSearchParams } from 'expo-router';
 import BuilderCard from '../../components/BuilderCard';
 import Input from '../../components/Input';
 import { API_BASE_URL } from '../../config';
 
 export default function SearchScreen() {
+    const { query } = useLocalSearchParams();
     const [builders, setBuilders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState(query || '');
 
     useEffect(() => {
         fetchBuilders();
     }, []);
+
+    useEffect(() => {
+        if (query) setSearchQuery(query);
+    }, [query]);
 
     const fetchBuilders = async () => {
         try {
