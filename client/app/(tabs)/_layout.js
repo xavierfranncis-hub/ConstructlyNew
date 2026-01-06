@@ -1,7 +1,10 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useAuth } from '../../context/AuthContext';
 
 export default function TabLayout() {
+    const { role } = useAuth();
+
     return (
         <Tabs
             screenOptions={{
@@ -20,33 +23,47 @@ export default function TabLayout() {
                     ),
                 }}
             />
-            <Tabs.Screen
-                name="search"
-                options={{
-                    title: 'Find Builders',
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="search" size={size} color={color} />
-                    ),
-                }}
-            />
-            <Tabs.Screen
-                name="dashboard"
-                options={{
-                    title: 'My Projects',
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="briefcase" size={size} color={color} />
-                    ),
-                }}
-            />
-            <Tabs.Screen
-                name="estimator"
-                options={{
-                    title: 'Estimator',
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="calculator" size={size} color={color} />
-                    ),
-                }}
-            />
+            {role === 'Customer' ? (
+                <>
+                    <Tabs.Screen
+                        name="search"
+                        options={{
+                            title: 'Find Builders',
+                            tabBarIcon: ({ color, size }) => (
+                                <Ionicons name="search" size={size} color={color} />
+                            ),
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="dashboard"
+                        options={{
+                            title: 'My Projects',
+                            tabBarIcon: ({ color, size }) => (
+                                <Ionicons name="briefcase" size={size} color={color} />
+                            ),
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="estimator"
+                        options={{
+                            title: 'Estimator',
+                            tabBarIcon: ({ color, size }) => (
+                                <Ionicons name="calculator" size={size} color={color} />
+                            ),
+                        }}
+                    />
+                </>
+            ) : (
+                <Tabs.Screen
+                    name="builder-dashboard"
+                    options={{
+                        title: 'Dashboard',
+                        tabBarIcon: ({ color, size }) => (
+                            <Ionicons name="stats-chart" size={size} color={color} />
+                        ),
+                    }}
+                />
+            )}
         </Tabs>
     );
 }

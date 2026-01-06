@@ -11,6 +11,9 @@ const projectSchema = new mongoose.Schema({
     startDate: { type: Date },
     estimatedEndDate: { type: Date },
     contractAmount: { type: Number },
+    category: { type: String }, // e.g. "Architect", "Masonry"
+    progressPhotos: { type: [String], default: [] },
+    location: { type: String },
     timestamp: { type: Date, default: Date.now }
 });
 

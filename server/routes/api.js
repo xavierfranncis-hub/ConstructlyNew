@@ -3,6 +3,8 @@ const router = express.Router();
 const Builder = require('../models/Builder');
 const Project = require('../models/Project');
 const House = require('../models/House');
+const Quotation = require('../models/Quotation');
+const Payment = require('../models/Payment');
 
 // In-memory Session Storage (if DB is down)
 const sessionBuilders = [];
@@ -109,13 +111,15 @@ router.get('/projects', async (req, res) => {
 // Create Project (Request Quote)
 router.post('/projects', async (req, res) => {
     try {
-        const { title, builder, status, progress } = req.body;
+        const { title, builder, status, progress, category, location } = req.body;
         const projectData = {
             id: Date.now(),
             title,
             builder,
             status: status || 'Draft/Quote',
             progress: progress || 0,
+            category,
+            location,
             lastUpdate: 'Just now',
             isHired: false
         };
@@ -216,6 +220,54 @@ router.post('/houses', async (req, res) => {
     } catch (err) {
         console.error('Post House Error:', err);
         res.status(500).json({ error: 'Failed to post property' });
+    }
+});
+
+// --- Builder Dashboard Endpoints ---
+
+// Get job requests for a builder (Filtered by expertise and city)
+router.get('/builder/requests', async (req, res) => {
+    try {
+        const { expertise, city } = req.query; // expertise can be comma-separated
+        const query = {
+            status: 'Draft/Quote',
+            isHired: false
+        };
+
+        if (city) query.location = new RegExp(city, 'i');
+        if (expertise) {
+            const expArray = expertise.split(',').map(e => e.trim());
+            query.category = { $in: expArray };
+        }
+
+        const jobs = await Project.find(query).sort({ timestamp: -1 });
+        res.json(jobs);
+    } catch (err) {
+        console.error('Fetch Jobs Error:', err);
+        res.status(500).json({ error: 'Failed to fetch job requests' });
+    }
+});
+
+// Submit a quotation
+router.post('/quotations', async (req, res) => {
+    try {
+        const quote = new Quotation(req.body);
+        await quote.save();
+        res.status(201).json(quote);
+    } catch (err) {
+        console.error('Submit Quote Error:', err);
+        res.status(500).json({ error: 'Failed to submit quotation' });
+    }
+});
+
+// Get builder earnings
+router.get('/builder/earnings/:builderId', async (req, res) => {
+    try {
+        const { builderId } = req.params;
+        const payments = await Payment.find({ builderId }).populate('projectId').sort({ timestamp: -1 });
+        res.json(payments);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch earnings' });
     }
 });
 
