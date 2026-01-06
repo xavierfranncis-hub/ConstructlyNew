@@ -10,22 +10,22 @@ const sessionProjects = [];
 
 // Fallback Mock Data (South Hyd)
 const FALLBACK_BUILDERS = [
-    { id: 1, name: 'Shamshabad Constructions', rating: 4.8, expertise: ['Full Home', 'Masonry'], location: 'Shamshabad, So. Hyd' },
-    { id: 2, name: 'Rajendranagar Electricals', rating: 4.5, expertise: ['Electrical', 'Wiring'], location: 'Rajendranagar, So. Hyd' },
-    { id: 3, name: 'Attapur Granites & Marbles', rating: 4.9, expertise: ['Granite', 'Tiles', 'Marbles'], location: 'Attapur, So. Hyd' },
-    { id: 4, name: 'Classic Interiors', rating: 4.7, expertise: ['Interior', 'Painting'], location: 'Aramghar, So. Hyd' },
-    { id: 5, name: 'SMR Building Materials', rating: 4.6, expertise: ['Cement', 'Sand', 'Steel'], location: 'Saroornagar, So. Hyd' },
-    { id: 6, name: 'Falaknuma Masons', rating: 4.4, expertise: ['Masonry', 'Renovation'], location: 'Falaknuma, So. Hyd' },
+    { id: 1, name: 'Hitech City Constructions', rating: 4.8, expertise: ['Full Home', 'Masonry'], location: 'Hitech City, Hyd' },
+    { id: 2, name: 'Kukatpally Electricals', rating: 4.5, expertise: ['Electrical', 'Wiring'], location: 'Kukatpally, Hyd' },
+    { id: 3, name: 'Banjara Hills Granites', rating: 4.9, expertise: ['Granite', 'Tiles', 'Marbles'], location: 'Banjara Hills, Hyd' },
+    { id: 4, name: 'Secunderabad Interiors', rating: 4.7, expertise: ['Interior', 'Painting'], location: 'Secunderabad, Hyd' },
+    { id: 5, name: 'LB Nagar Materials', rating: 4.6, expertise: ['Cement', 'Sand', 'Steel'], location: 'LB Nagar, Hyd' },
+    { id: 6, name: 'Falaknuma Masons', rating: 4.4, expertise: ['Masonry', 'Renovation'], location: 'Falaknuma, Hyd' },
 ];
 
 const FALLBACK_PROJECTS = [
-    { id: 1, title: 'Duplex Villa - Shamshabad', builder: 'Shamshabad Constructions', progress: 0.65, status: 'Masonry Work', lastUpdate: '2 hours ago' },
-    { id: 2, title: 'Granite Flooring - Attapur', builder: 'Attapur Granites & Marbles', progress: 0.30, status: 'Material Selection', lastUpdate: '1 day ago' },
+    { id: 1, title: 'Duplex Villa - Hitech City', builder: 'Hitech City Constructions', progress: 0.65, status: 'Masonry Work', lastUpdate: '2 hours ago' },
+    { id: 2, title: 'Granite Flooring - Banjara Hills', builder: 'Banjara Hills Granites', progress: 0.30, status: 'Material Selection', lastUpdate: '1 day ago' },
 ];
 
 const FALLBACK_HOUSES = [
-    { id: 1, title: 'Luxurious 4BHK Villa', price: 25000000, type: 'New', location: 'Gachibowli, Hyd', images: [], sellerName: 'Rajesh Kumar', sellerPhone: '9876543210', description: 'Modern villa with premium amenities.' },
-    { id: 2, title: 'Cozy 2BHK Apartment', price: 6500000, type: 'Old', location: 'Kukatpally, Hyd', images: [], sellerName: 'Sneha Reddy', sellerPhone: '8765432109', description: 'Well-maintained flat in a prime location.' },
+    { id: 1, title: 'Luxurious 4BHK Villa', price: 25000000, type: 'New', location: 'Jubilee Hills, Hyd', images: [], sellerName: 'Rajesh Kumar', sellerPhone: '9876543210', description: 'Modern villa with premium amenities.' },
+    { id: 2, title: 'Cozy 2BHK Apartment', price: 6500000, type: 'Old', location: 'Miyapur, Hyd', images: [], sellerName: 'Sneha Reddy', sellerPhone: '8765432109', description: 'Well-maintained flat in a prime location.' },
 ];
 
 // Get Builders

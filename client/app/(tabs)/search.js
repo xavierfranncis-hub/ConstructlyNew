@@ -28,12 +28,12 @@ export default function SearchScreen() {
             console.error('Error fetching builders:', error);
             // Fallback mock data if server fails
             setBuilders([
-                { id: 1, name: 'Shamshabad Constructions', rating: 4.8, expertise: ['Full Home', 'Masonry'], location: 'Shamshabad, So. Hyd' },
-                { id: 2, name: 'Rajendranagar Electricals', rating: 4.5, expertise: ['Electrical', 'Wiring'], location: 'Rajendranagar, So. Hyd' },
-                { id: 3, name: 'Attapur Granites & Marbles', rating: 4.9, expertise: ['Granite', 'Tiles', 'Marbles'], location: 'Attapur, So. Hyd' },
-                { id: 4, name: 'Classic Interiors', rating: 4.7, expertise: ['Interior', 'Painting'], location: 'Aramghar, So. Hyd' },
-                { id: 5, name: 'SMR Building Materials', rating: 4.6, expertise: ['Cement', 'Sand', 'Steel'], location: 'Saroornagar, So. Hyd' },
-                { id: 6, name: 'Falaknuma Masons', rating: 4.4, expertise: ['Masonry', 'Renovation'], location: 'Falaknuma, So. Hyd' },
+                { id: 1, name: 'Hitech City Constructions', rating: 4.8, expertise: ['Full Home', 'Masonry'], location: 'Hitech City, Hyd' },
+                { id: 2, name: 'Kukatpally Electricals', rating: 4.5, expertise: ['Electrical', 'Wiring'], location: 'Kukatpally, Hyd' },
+                { id: 3, name: 'Banjara Hills Granites', rating: 4.9, expertise: ['Granite', 'Tiles', 'Marbles'], location: 'Banjara Hills, Hyd' },
+                { id: 4, name: 'Secunderabad Interiors', rating: 4.7, expertise: ['Interior', 'Painting'], location: 'Secunderabad, Hyd' },
+                { id: 5, name: 'LB Nagar Materials', rating: 4.6, expertise: ['Cement', 'Sand', 'Steel'], location: 'LB Nagar, Hyd' },
+                { id: 6, name: 'Falaknuma Masons', rating: 4.4, expertise: ['Masonry', 'Renovation'], location: 'Falaknuma, Hyd' },
             ]);
         } finally {
             setLoading(false);

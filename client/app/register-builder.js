@@ -114,8 +114,8 @@ export default function RegisterBuilderScreen() {
                     onChangeText={setOwnerName}
                 />
                 <Input
-                    label="Location (South Hyd)"
-                    placeholder="e.g. Shamshabad, Attapur"
+                    label="Business Location"
+                    placeholder="e.g. Madhapur, Shamshabad, Secunderabad"
                     value={location}
                     onChangeText={setLocation}
                 />
