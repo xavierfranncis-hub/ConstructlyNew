@@ -84,49 +84,49 @@ export const MATERIAL_CATEGORIES = [
         id: 'plumbing_materials',
         title: 'Plumbing',
         description: 'Water supply, drainage, and waste.',
-        image: require('../assets/materials/plumbing.jpg'),
+        image: require('../assets/materials/core.png'),
         items: ['Pipes (PVC/CPVC/PEX)', 'Fittings & Valves', 'Fixtures (Wash Basin/WC)', 'Adhesives']
     },
     {
         id: 'electrical_materials',
         title: 'Electricals',
         description: 'Power distribution and safety.',
-        image: require('../assets/materials/electrical.jpg'),
+        image: require('../assets/materials/core.png'),
         items: ['Wires & Cables', 'Conduit Pipes', 'Switches & Sockets', 'Switchgears (MCB)']
     },
     {
         id: 'painting_materials',
         title: 'Painting',
         description: 'Surface preparation and finishing.',
-        image: require('../assets/materials/painting.jpg'),
+        image: require('../assets/materials/core.png'),
         items: ['Paints (Emulsion/Enamel)', 'Primer & Putty', 'Tools & Accessories']
     },
     {
         id: 'interior_materials',
         title: 'Interior',
         description: 'Aesthetics and functionality.',
-        image: require('../assets/materials/interior.jpg'),
+        image: require('../assets/materials/core.png'),
         items: ['Flooring', 'Gypsum Boards', 'Cabinets', 'Countertops', 'Hardware']
     },
     {
         id: 'fabrication_materials',
         title: 'Fabrication',
         description: 'Metal items for safety.',
-        image: require('../assets/materials/fabrication.jpg'),
+        image: require('../assets/materials/core.png'),
         items: ['Steel/Iron Grills', 'Metal Sheets']
     },
     {
         id: 'glass_materials',
         title: 'Glass',
         description: 'Windows, doors, and facades.',
-        image: require('../assets/materials/glass.jpg'),
+        image: require('../assets/materials/core.png'),
         items: ['Tempered', 'Laminated', 'IGUs', 'Decorative']
     },
     {
         id: 'cctv_materials',
         title: 'CCTV',
         description: 'Security and surveillance.',
-        image: require('../assets/materials/security.jpg'),
+        image: require('../assets/materials/core.png'),
         items: ['Cameras', 'DVR/NVR', 'Cables', 'Hard Drive', 'Monitors']
     }
 ];
