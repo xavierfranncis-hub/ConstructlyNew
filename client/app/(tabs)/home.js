@@ -27,16 +27,48 @@ export default function HomeScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.logo}>Constructly</Text>
-                <TouchableOpacity style={styles.profileButton}>
-                    <Ionicons name="person-circle-outline" size={32} color="#94A3B8" />
+                <View style={styles.branding}>
+                    <View style={styles.logoIcon}>
+                        <Ionicons name="construct" size={24} color="white" />
+                    </View>
+                    <Text style={styles.logo}>Constructly</Text>
+                </View>
+                <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/profile')}>
+                    <View style={styles.avatarPlaceholder}>
+                        <Ionicons name="person" size={20} color="white" />
+                    </View>
                 </TouchableOpacity>
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-                <Text style={styles.welcomeText}>Build Your Dream Home</Text>
-                <Text style={styles.subWelcome}>Step-by-step guidance from planning to housewarming.</Text>
+                <View style={styles.heroSection}>
+                    <Text style={styles.welcomeText}>Build Your Dream Home</Text>
+                    <Text style={styles.subWelcome}>Step-by-step guidance from planning to housewarming.</Text>
+                </View>
 
+                {/* Marketplace Hero */}
+                <TouchableOpacity
+                    style={styles.realEstateHero}
+                    onPress={() => router.push('/real-estate')}
+                >
+                    <Image
+                        source={require('../../assets/phases/handover.png')}
+                        style={styles.reImage}
+                    />
+                    <View style={styles.reOverlay}>
+                        <View style={styles.reBadge}>
+                            <Text style={styles.reBadgeText}>Marketplace</Text>
+                        </View>
+                        <Text style={styles.reTitle}>Buy or Sell House</Text>
+                        <Text style={styles.reSub}>List your home or find property</Text>
+                        <View style={styles.reButton}>
+                            <Text style={styles.reButtonText}>Explore listings</Text>
+                            <Ionicons name="arrow-forward" size={16} color="#0EA5E9" />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+
+                <Text style={styles.sectionTitle}>Construction Phases</Text>
                 <View style={styles.phaseGrid}>
                     {CONSTRUCTION_PHASES.map((phase) => (
                         <TouchableOpacity
@@ -119,15 +151,46 @@ const styles = StyleSheet.create({
         paddingTop: 60,
         paddingBottom: 20,
     },
+    branding: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    },
+    logoIcon: {
+        width: 36,
+        height: 36,
+        borderRadius: 10,
+        backgroundColor: '#0EA5E9',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     logo: {
         fontSize: 24,
         fontWeight: '900',
-        color: '#0EA5E9',
-        letterSpacing: -1,
+        color: '#F8FAFC',
+        letterSpacing: -0.5,
+        fontFamily: 'System', // Bold system font
+    },
+    profileButton: {
+        borderRadius: 20,
+        overflow: 'hidden',
+    },
+    avatarPlaceholder: {
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        backgroundColor: '#334155',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#475569',
     },
     scrollContent: {
         paddingHorizontal: 20,
         paddingBottom: 40,
+    },
+    heroSection: {
+        marginBottom: 20,
     },
     welcomeText: {
         fontSize: 28,
@@ -138,7 +201,79 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#94A3B8',
         marginTop: 5,
-        marginBottom: 25,
+    },
+    realEstateHero: {
+        width: '100%',
+        height: 180,
+        borderRadius: 24,
+        overflow: 'hidden',
+        marginBottom: 30,
+        backgroundColor: '#1E293B',
+        elevation: 10,
+        shadowColor: '#0EA5E9',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        borderWidth: 1,
+        borderColor: '#334155',
+    },
+    reImage: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        opacity: 0.6,
+    },
+    reOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(15, 23, 42, 0.4)',
+        padding: 20,
+        justifyContent: 'center',
+    },
+    reBadge: {
+        backgroundColor: '#0EA5E9',
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: 12,
+        alignSelf: 'flex-start',
+        marginBottom: 10,
+    },
+    reBadgeText: {
+        color: 'white',
+        fontSize: 10,
+        fontWeight: '900',
+        textTransform: 'uppercase',
+    },
+    reTitle: {
+        color: 'white',
+        fontSize: 24,
+        fontWeight: 'bold',
+    },
+    reSub: {
+        color: '#CBD5E1',
+        fontSize: 14,
+        marginTop: 4,
+        marginBottom: 15,
+    },
+    reButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        borderRadius: 12,
+        alignSelf: 'flex-start',
+        gap: 5,
+    },
+    reButtonText: {
+        color: '#0F172A',
+        fontSize: 14,
+        fontWeight: 'bold',
+    },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#F8FAFC',
+        marginBottom: 15,
     },
     phaseGrid: {
         flexDirection: 'row',
@@ -147,7 +282,7 @@ const styles = StyleSheet.create({
     },
     phaseCard: {
         width: (width - 50) / 2,
-        height: 140,
+        height: 120,
         borderRadius: 16,
         marginBottom: 15,
         overflow: 'hidden',

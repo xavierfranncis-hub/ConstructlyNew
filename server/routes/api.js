@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Builder = require('../models/Builder');
 const Project = require('../models/Project');
+const House = require('../models/House');
 
 // In-memory Session Storage (if DB is down)
 const sessionBuilders = [];
@@ -20,6 +21,11 @@ const FALLBACK_BUILDERS = [
 const FALLBACK_PROJECTS = [
     { id: 1, title: 'Duplex Villa - Shamshabad', builder: 'Shamshabad Constructions', progress: 0.65, status: 'Masonry Work', lastUpdate: '2 hours ago' },
     { id: 2, title: 'Granite Flooring - Attapur', builder: 'Attapur Granites & Marbles', progress: 0.30, status: 'Material Selection', lastUpdate: '1 day ago' },
+];
+
+const FALLBACK_HOUSES = [
+    { id: 1, title: 'Luxurious 4BHK Villa', price: 25000000, type: 'New', location: 'Gachibowli, Hyd', images: [], sellerName: 'Rajesh Kumar', sellerPhone: '9876543210', description: 'Modern villa with premium amenities.' },
+    { id: 2, title: 'Cozy 2BHK Apartment', price: 6500000, type: 'Old', location: 'Kukatpally, Hyd', images: [], sellerName: 'Sneha Reddy', sellerPhone: '8765432109', description: 'Well-maintained flat in a prime location.' },
 ];
 
 // Get Builders
@@ -180,6 +186,36 @@ router.patch('/projects/:id/hire', async (req, res) => {
     } catch (err) {
         console.error('Hiring Error:', err);
         res.status(500).json({ error: 'Failed to finalize hire' });
+    }
+});
+
+// --- Real Estate (Buy/Sell) ---
+
+// Get all houses
+router.get('/houses', async (req, res) => {
+    try {
+        const dbHouses = await House.find().sort({ timestamp: -1 });
+        const sanitized = dbHouses.map(h => ({ ...h.toObject(), id: h._id.toString() }));
+        if (sanitized.length > 0) return res.json(sanitized);
+        res.json(FALLBACK_HOUSES);
+    } catch (err) {
+        res.json(FALLBACK_HOUSES);
+    }
+});
+
+// Post a new house
+router.post('/houses', async (req, res) => {
+    try {
+        const houseData = req.body;
+        const newHouse = new House({
+            ...houseData,
+            id: Date.now() // Internal numeric ID for fallbacks
+        });
+        await newHouse.save();
+        res.status(201).json(newHouse);
+    } catch (err) {
+        console.error('Post House Error:', err);
+        res.status(500).json({ error: 'Failed to post property' });
     }
 });
 
