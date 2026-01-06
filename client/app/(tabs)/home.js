@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { CONSTRUCTION_PHASES, MATERIAL_CATEGORIES } from '../../constants/categories';
+import { useAuth } from '../../context/AuthContext';
 
 const { width } = Dimensions.get('window');
 
 export default function HomeScreen() {
     const router = useRouter();
+    const { role, setRole } = useAuth();
     const [selectedPhase, setSelectedPhase] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -27,12 +29,21 @@ export default function HomeScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <View style={styles.branding}>
+                <TouchableOpacity
+                    style={styles.branding}
+                    onPress={() => {
+                        const newRole = role === 'Customer' ? 'Builder' : 'Customer';
+                        setRole(newRole);
+                    }}
+                >
                     <View style={styles.logoIcon}>
                         <Ionicons name="construct" size={24} color="white" />
                     </View>
                     <Text style={styles.logo}>Constructly</Text>
-                </View>
+                    <View style={styles.roleBadge}>
+                        <Text style={styles.roleBadgeText}>{role}</Text>
+                    </View>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/profile')}>
                     <View style={styles.avatarPlaceholder}>
                         <Ionicons name="person" size={20} color="white" />
@@ -170,6 +181,19 @@ const styles = StyleSheet.create({
         color: '#F8FAFC',
         letterSpacing: -0.5,
         fontFamily: 'System', // Bold system font
+    },
+    roleBadge: {
+        backgroundColor: 'rgba(14, 165, 233, 0.2)',
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+        borderRadius: 6,
+        marginLeft: 5,
+    },
+    roleBadgeText: {
+        color: '#0EA5E9',
+        fontSize: 10,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
     },
     profileButton: {
         borderRadius: 20,
